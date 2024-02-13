@@ -6,6 +6,10 @@ from main.models import Rate, Currency
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
+        """
+        Функция подключается к API серверу ЦБ и записывает от туда КУРСЫ ВАЛЮТ в базу дынных
+        (функция отладочная и не обязательная, дублируется в 'runapscheduler.py' в автоматическом режиме)
+        """
         json_list = json.loads(requests.get('https://www.cbr-xml-daily.ru/daily_json.js').content.decode())
         for currency_code, currency_data in json_list.get('Valute').items():
             currency = Currency.objects.filter(charcode=currency_data['CharCode']).first()

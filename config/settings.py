@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'main',
     "django_apscheduler",
+    'rest_framework',
+    'django_filters',
 ]
 
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
