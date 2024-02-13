@@ -3,6 +3,9 @@ from main.models import Rate, Currency
 
 
 class CurrencySerializer(serializers.ModelSerializer):
+    """
+    Сериализатор валюты и добавлением полей отношения и даты от ее курса
+    """
     rate = serializers.FloatField(source='rate_set.all.last.rate')
     date = serializers.DateField(source='rate_set.all.last.date')
 
@@ -12,6 +15,9 @@ class CurrencySerializer(serializers.ModelSerializer):
 
 
 class RateSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор курса валюты и добавлением полея кода валюты
+    """
     charcode = serializers.CharField(source='currency.charcode')
 
     class Meta:
