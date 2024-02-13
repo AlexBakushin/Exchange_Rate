@@ -12,8 +12,9 @@ class CurrencySerializer(serializers.ModelSerializer):
 
 
 class RateSerializer(serializers.ModelSerializer):
+    charcode = serializers.CharField(source='currency.charcode')
 
     class Meta:
         model = Rate
-        fields = '__all__'
+        fields = ('charcode', 'date', 'rate')
 
