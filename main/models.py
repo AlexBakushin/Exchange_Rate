@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Currency(models.Model):
+    """
+    Модель валюты
+    """
     name = models.CharField(max_length=150, unique=True, verbose_name='Название валюты')
     charcode = models.CharField(max_length=3, unique=True, verbose_name='Код валюты')
 
@@ -14,6 +17,9 @@ class Currency(models.Model):
 
 
 class Rate(models.Model):
+    """
+    Модель курса валюты
+    """
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, verbose_name='Валюта')
     date = models.DateField(auto_now=True, verbose_name='Дата')
     rate = models.FloatField(verbose_name='Курс к рублю')
