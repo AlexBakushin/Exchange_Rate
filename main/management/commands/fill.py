@@ -6,6 +6,9 @@ from main.models import Currency
 
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
+        """
+        Функция подключается к API серверу ЦБ и записывает от туда ВАЛЮТЫ И ИНФОРМАЦИЮ О НИХ в базу дынных
+        """
         json_list = json.loads(requests.get('https://www.cbr-xml-daily.ru/daily_json.js').content.decode())
         for currency_code, currency_data in json_list.get('Valute').items():
             currency = Currency.objects.create(

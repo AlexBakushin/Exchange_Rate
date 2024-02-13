@@ -17,11 +17,15 @@ logger = logging.getLogger(__name__)
 
 
 def my_job():
+    """
+    Функция подключается к API серверу ЦБ и записывает от туда КУРСЫ ВАЛЮТ в базу дынных
+    Она работает в автоматическом режиме и повторяется каждые 24 часа
+    """
     print('Задача запущена')
     timezone.activate('Asia/Yekaterinburg')
     today = datetime.now().strftime("%Y-%m-%d")
     if Rate.objects.all():
-        rate_date = Rate.objects.all().last().date.strftime("%Y-%m-%d")
+        rate_date = Rate.objects.all().first().date.strftime("%Y-%m-%d")
 
     else:
         rate_date = '2024-02-12'
@@ -54,6 +58,9 @@ def my_job():
 
 @util.close_old_connections
 def delete_old_job_executions(max_age=604_800):
+    """
+    Это задание удаляет из базы данных записи выполнения заданий APScheduler старше 7 дней
+    """
     DjangoJobExecution.objects.delete_old_job_executions(max_age)
 
 
@@ -61,6 +68,10 @@ class Command(BaseCommand):
     help = "Runs APScheduler."
 
     def handle(self, *args, **options):
+        """
+        Функция запускающая в автоматику записанную функцию 'my_job'
+        trigger - переодичность повторения функции
+        """
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
         scheduler.add_job(
